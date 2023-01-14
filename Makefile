@@ -1,4 +1,4 @@
-PACKAGE="sample-project"
+PACKAGE="sample-restserver-fastapi"
 
 .PHONY: clean
 clean: clean-python clean-package clean-tests clean-system
@@ -67,13 +67,14 @@ tests-python:
 tests-report:
 	python -u -m pytest -v --cov --cov-report=html
 
-.PHONY: vup
-vup:
-	git tag ${ARG}
+# Usage: make version-up VERSION=vX.X.X
+.PHONY: version-up
+version-up:
+	git tag ${VERSION}
 	poetry dynamic-versioning
 	git add pyproject.toml backend/__init__.py
-	git commit -m "${ARG}"
-	git tag -f ${ARG}
+	git commit -m "${VERSION}"
+	git tag -f ${VERSION}
 	git push
 	git push --tags
 
