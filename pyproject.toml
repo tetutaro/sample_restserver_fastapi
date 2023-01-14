@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "sample-restserver-fastapi"
+version = "0.0.0"  # automatically updated by poetry-dynamic-versioning
+description = "A sample REST server using FastAPI"
+authors = ["Tetsutaro Maruyama <tetsutaro.maruyama@gmail.com>"]
+packages = [{include = "sample_restserver_fastapi"}]
+
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+format = "{base}"
+style = "pep440"
+
+[tool.poetry-dynamic-versioning.substitution]
+files = ["backend/__init__.py"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
+build-backend = "poetry_dynamic_versioning.backend"
