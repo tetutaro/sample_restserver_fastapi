@@ -38,6 +38,7 @@ class SampleHandler:
             SampleErrorFound:
                 length of ID != 4 or ID contains non-numeric charactor(s)
         """
+        self.logger.info(f"insert_number: {item.item_id}")
         match = re.match(r"^[0-9]{4}$", item.item_id)
         if match is None:
             raise SampleErrorFound(item_id=item.item_id)
@@ -53,6 +54,7 @@ class SampleHandler:
             SampleErrorFound:
                 length of ID != 4 or ID contains non-alphabet charactor(s)
         """
+        self.logger.info(f"insert_text: {item.item_id}")
         match = re.match(r"^[a-zA-Z]{4}$", item.item_id)
         if match is None:
             raise SampleErrorFound(item_id=item.item_id)
@@ -69,6 +71,7 @@ class SampleHandler:
                 length of ID != 4 or
                 ID contains non-numeric & non-alphabet charactor(s)
         """
+        self.logger.info(f"delete: {item_id}")
         match = re.match(r"[0-9a-zA-Z]{4}$", item_id)
         if match is None:
             raise SampleErrorNotFound(item_id=item_id)
@@ -87,6 +90,7 @@ class SampleHandler:
             SampleErrorNotFound:
                 length of ID != 4 or ID contains non-numeric charactor(s)
         """
+        self.logger.info(f"refer_number: {item_id}")
         if len(item_id) != 4:
             raise SampleErrorNotFound(item_id=item_id)
         match = re.match(r"^[0-9]$", item_id)
@@ -112,6 +116,7 @@ class SampleHandler:
             SampleErrorNotFound:
                 length of ID != 4 or ID contains non-alphabet charactor(s)
         """
+        self.logger.info(f"refer_text: {item_id}")
         if len(item_id) != 4:
             raise SampleErrorNotFound(item_id=item_id)
         match = re.match(r"^[a-zA-Z]$", item_id)
@@ -130,6 +135,7 @@ class SampleHandler:
         Returns:
             SampleCount: the number of items
         """
+        self.logger.info("count")
         return SampleCount(
             **{
                 "count_numeric": 123,

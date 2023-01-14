@@ -3,6 +3,7 @@
 """the module that create API and pass the request to the handler
 """
 from typing import List, Type, Dict
+import os
 from logging import Logger, getLogger
 
 from fastapi import FastAPI, Request, status
@@ -14,6 +15,7 @@ from starlette.middleware.cors import CORSMiddleware
 from backend import __version__
 from backend.dto import (
     SampleVersion,
+    SampleWSGIServer,
     SampleNumericItem,
     SampleTextItem,
     SampleCount,
@@ -73,7 +75,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-logger: Logger = getLogger("uvicorn")  # instance of Logger
+# instance of Logger
+wsgi_server: str = os.environ.get("WSGI_SERVER", "uvicorn")
+logger: Logger = getLogger(wsgi_server)
+# handler instance
 handler: SampleHandler = SampleHandler(logger=logger)
 
 
@@ -169,6 +174,22 @@ async def op_version() -> SampleVersion:
     return SampleVersion(
         **{
             "version": __version__,
+        }
+    )
+
+
+@app.get(
+    f"/api/{API_VERSION}/wsgi_server",
+    summary="get WSGI server name",
+    status_code=status.HTTP_200_OK,
+    tags=["Others"],
+)
+async def op_wsgi_server() -> SampleWSGIServer:
+    f"""get WSGI server name (GET `/api/{API_VERSION}/wsgi_server`)"""
+    logger.info("wsgi_server")
+    return SampleWSGIServer(
+        **{
+            "wsgi_server": wsgi_server,
         }
     )
 

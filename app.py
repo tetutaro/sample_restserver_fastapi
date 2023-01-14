@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-"""revoke FastAPI using uvicorn
+"""start backend server at local machine in debug mode
 """
 import uvicorn
 
 
 def main() -> None:
-    """revoke FastAPI using uvicorn"""
+    """invoke FastAPI using uvicorn"""
     kwargs = {
         "app": "backend.api:app",
         "host": "0.0.0.0",

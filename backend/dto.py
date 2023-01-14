@@ -90,6 +90,16 @@ class SampleVersion(BaseModel):
     _validated_version: str = validator("version")(check_version)
 
 
+class SampleWSGIServer(BaseModel):
+    """the WSGI server name
+
+    Attributes:
+        wsgi_server (str): the name of WSGI server
+    """
+
+    wsgi_server: str = Field(..., example="the name of WSGI server")
+
+
 class SampleNumericItem(BaseModel):
     """the item contains number
 

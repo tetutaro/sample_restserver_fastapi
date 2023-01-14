@@ -29,3 +29,7 @@ A sample REST server using FastAPI
     * `validator()` の中で `allow_reuse` の設定
 * sphinx で必要な設定を pyproject.toml に集約する
     * [sphinx-pyproject-poetry](https://github.com/tetutaro/sphinx-pyproject-poetry.git) の利用
+* gunicorn の logger の名前を変え、使いやすいようにする
+    * gunicorn.logging.conf の設定
+* gunicorn の access log のフォーマットを一般的なログに合わせて見やすいようにする
+    * gunicorn.logging.conf の設定

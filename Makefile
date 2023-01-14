@@ -84,9 +84,9 @@ else
 	@echo "Usage: make version-up VERSION=vX.X.X"
 endif
 
-.PHONY: backend
-backend:
-	python -m backend.app
+.PHONY: app
+app:
+	python -m app
 
 .PHONY: req_pingpong
 req_pingpong:
@@ -95,6 +95,10 @@ req_pingpong:
 .PHONY: req_version
 req_version:
 	curl -S -s -i -X GET -H "Content-Type: application/json" "localhost:8930/api/v1/version"
+
+.PHONY: req_wsgi_server
+req_wsgi_server:
+	curl -S -s -i -X GET -H "Content-Type: application/json" "localhost:8930/api/v1/wsgi_server"
 
 .PHONY: req_insert_number
 req_insert_number:
