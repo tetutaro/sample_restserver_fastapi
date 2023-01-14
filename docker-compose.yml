@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sample_backend
+    ports:
+      - 8930:8930
+    expose:
+      - "8930"
+    networks:
+      - sample_network
+
+networks:
+  sample_network:
