@@ -67,16 +67,22 @@ tests-python:
 tests-report:
 	python -u -m pytest -v --cov --cov-report=html
 
-# Usage: make version-up VERSION=vX.X.X
+# add new version number.
+# do this after committing changes to the local repositry
+# and before pushing changes to the remote repository.
 .PHONY: version-up
 version-up:
-	git tag ${VERSION}
+ifdef VERSION
+	git tag $(VERSION)
 	poetry dynamic-versioning
 	git add pyproject.toml backend/__init__.py
-	git commit -m "${VERSION}"
-	git tag -f ${VERSION}
+	git commit -m "$(VERSION)"
+	git tag -f $(VERSION)
 	git push
 	git push --tags
+else
+	@echo "Usage: make version-up VERSION=vX.X.X"
+endif
 
 .PHONY: backend
 backend:
