@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sample-restserver-fastapi"
-version = "0.2.0"  # automatically updated by poetry-dynamic-versioning
+version = "0.3.0"  # automatically updated by poetry-dynamic-versioning
 description = "A sample REST server using FastAPI"
 authors = ["Tetsutaro Maruyama <tetsutaro.maruyama@gmail.com>"]
 packages = [{include = "sample_restserver_fastapi"}]
