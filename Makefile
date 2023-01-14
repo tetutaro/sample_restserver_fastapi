@@ -67,6 +67,16 @@ tests-python:
 tests-report:
 	python -u -m pytest -v --cov --cov-report=html
 
+.PHONY: vup
+vup:
+	git tag ${ARG}
+	poetry dynamic-versioning
+	git add pyproject.toml backend/__init__.py
+	git commit -m "${ARG}"
+	git tag -f ${ARG}
+	git push
+	git push --tags
+
 .PHONY: backend
 backend:
 	python -m backend.app
