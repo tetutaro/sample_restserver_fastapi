@@ -33,3 +33,5 @@ A sample REST server using FastAPI
     * gunicorn.logging.conf の設定
 * gunicorn の access log のフォーマットを一般的なログに合わせて見やすいようにする
     * gunicorn.logging.conf の設定
+* healthcheck を行うようにした
+    * health API の追加と docker-compose の設定

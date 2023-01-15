@@ -1,4 +1,5 @@
 FROM python:3.10.9-slim-bullseye
+RUN apt update && apt upgrade && apt install -y curl
 RUN mkdir /app
 WORKDIR /app
 ADD requirements.txt .

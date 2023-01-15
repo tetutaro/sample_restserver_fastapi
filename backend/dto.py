@@ -78,6 +78,16 @@ def check_text(text: str) -> str:
     return text
 
 
+class SampleHealth(BaseModel):
+    """health check
+
+    Attributes:
+        health (str): dummy string
+    """
+
+    health: str = Field(..., example="OK")
+
+
 class SampleVersion(BaseModel):
     """the version of backend server
 

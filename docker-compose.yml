@@ -11,6 +11,11 @@ services:
       - "8930"
     networks:
       - sample_network
+    healthcheck:
+      test: curl -s -f http://backend:8930/health >/dev/null || exit 1
+      interval: 30s
+      timeout: 5s
+      retries: 6
 
 networks:
   sample_network:

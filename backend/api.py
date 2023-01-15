@@ -14,6 +14,7 @@ from starlette.middleware.cors import CORSMiddleware
 
 from backend import __version__
 from backend.dto import (
+    SampleHealth,
     SampleVersion,
     SampleWSGIServer,
     SampleNumericItem,
@@ -151,15 +152,14 @@ async def swagger_ui_html():
 
 
 @app.get(
-    f"/api/{API_VERSION}/pingpong",
-    summary="confirm alive of server",
+    "/health",
+    summary="health check",
     status_code=status.HTTP_200_OK,
     tags=["Others"],
 )
-async def op_pingpong() -> None:
-    f"""confirm alive of server (GET `/api/{API_VERSION}/pingpong`)"""
-    logger.info("pingpong")
-    return
+async def op_health() -> SampleHealth:
+    """confirm alive of server (GET `/health`)"""
+    return SampleHealth(**{"health": "OK"})
 
 
 @app.get(

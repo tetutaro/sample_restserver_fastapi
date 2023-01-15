@@ -88,9 +88,9 @@ endif
 app:
 	python -m app
 
-.PHONY: req_pingpong
-req_pingpong:
-	curl -S -s -i -X GET -H "Content-Type: application/json" "localhost:8930/api/v1/pingpong"
+.PHONY: req_health
+req_health:
+	curl -S -s -i -X GET -H "Content-Type: application/json" "localhost:8930/health"
 
 .PHONY: req_version
 req_version:
