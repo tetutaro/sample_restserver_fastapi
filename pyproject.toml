@@ -35,7 +35,7 @@ build-backend = "poetry_dynamic_versioning.backend"
 
 [tool.flake8]
 max-line-length = 79
-extend-ignore = ["E203"]
+ignore = "E203"
 max-complexity = 15
 
 [tool.black]
