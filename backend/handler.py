@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 """handler module that handle the request
 """
@@ -25,7 +25,7 @@ class SampleHandler:
     """
 
     def __init__(self: SampleHandler, logger: Logger) -> None:
-        self.logger = logger
+        self.logger: Logger = logger
         return
 
     def insert_number(self: SampleHandler, item: SampleNumericItem) -> None:
@@ -39,8 +39,7 @@ class SampleHandler:
                 length of ID != 4 or ID contains non-numeric charactor(s)
         """
         self.logger.info(f"insert_number: {item.item_id}")
-        match = re.match(r"^[0-9]{4}$", item.item_id)
-        if match is None:
+        if re.match(r"^[0-9]{4}$", item.item_id) is None:
             raise SampleErrorFound(item_id=item.item_id)
         return
 
@@ -55,8 +54,7 @@ class SampleHandler:
                 length of ID != 4 or ID contains non-alphabet charactor(s)
         """
         self.logger.info(f"insert_text: {item.item_id}")
-        match = re.match(r"^[a-zA-Z]{4}$", item.item_id)
-        if match is None:
+        if re.match(r"^[a-zA-Z]{4}$", item.item_id) is None:
             raise SampleErrorFound(item_id=item.item_id)
         return
 
@@ -72,8 +70,7 @@ class SampleHandler:
                 ID contains non-numeric & non-alphabet charactor(s)
         """
         self.logger.info(f"delete: {item_id}")
-        match = re.match(r"[0-9a-zA-Z]{4}$", item_id)
-        if match is None:
+        if re.match(r"[0-9a-zA-Z]{4}$", item_id) is None:
             raise SampleErrorNotFound(item_id=item_id)
         return
 
@@ -91,16 +88,11 @@ class SampleHandler:
                 length of ID != 4 or ID contains non-numeric charactor(s)
         """
         self.logger.info(f"refer_number: {item_id}")
-        if len(item_id) != 4:
-            raise SampleErrorNotFound(item_id=item_id)
-        match = re.match(r"^[0-9]$", item_id)
-        if match is not None:
+        if re.match(r"^[0-9]{4}$", item_id) is None:
             raise SampleErrorNotFound(item_id=item_id)
         return SampleNumericItem(
-            **{
-                "item_id": item_id,
-                "number": 5,
-            }
+            item_id=item_id,
+            number=5,
         )
 
     def refer_text(self: SampleHandler, item_id: str) -> SampleTextItem:
@@ -117,16 +109,11 @@ class SampleHandler:
                 length of ID != 4 or ID contains non-alphabet charactor(s)
         """
         self.logger.info(f"refer_text: {item_id}")
-        if len(item_id) != 4:
-            raise SampleErrorNotFound(item_id=item_id)
-        match = re.match(r"^[a-zA-Z]$", item_id)
-        if match is not None:
+        if re.match(r"^[a-zA-Z]{4}$", item_id) is None:
             raise SampleErrorNotFound(item_id=item_id)
         return SampleTextItem(
-            **{
-                "item_id": item_id,
-                "text": "hogehoge",
-            }
+            item_id=item_id,
+            text="hogehoge",
         )
 
     def count(self: SampleHandler) -> SampleCount:
@@ -137,8 +124,6 @@ class SampleHandler:
         """
         self.logger.info("count")
         return SampleCount(
-            **{
-                "count_numeric": 123,
-                "count_text": 456,
-            }
+            count_numeric=123,
+            count_text=456,
         )

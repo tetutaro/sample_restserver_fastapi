@@ -6,14 +6,18 @@ authors = ["Tetsutaro Maruyama <tetsutaro.maruyama@gmail.com>"]
 packages = [{include = "sample_restserver_fastapi"}]
 
 [tool.poetry.group.dev.dependencies]
-pyproject-flake8 = "^6.0.0.post1"
 black = "^22.12.0"
 python-lsp-server = "^1.7.0"
 pytest = "^7.2.0"
 pytest-cov = "^4.0.0"
 sphinx = "^6.1.3"
 sphinx-rtd-theme = "1.2.0rc2"
-sphinx-pyproject-poetry = {git = "https://github.com/tetutaro/sphinx-pyproject-poetry.git"}
+sphinx-pyproject-poetry = {git = "https://github.com/tetutaro/sphinx_pyproject_poetry.git"}
+flake8 = "4.0.1"
+coverage = "^7.1.0"
+mypy = "^0.991"
+pytest-flake8 = "^1.1.1"
+pytest-mypy = "^0.10.3"
 
 [tool.poetry-dynamic-versioning]
 enable = true
@@ -33,20 +37,25 @@ uvicorn = {extras = ["standard"], version = "^0.20.0"}
 requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
 build-backend = "poetry_dynamic_versioning.backend"
 
-[tool.flake8]
-max-line-length = 79
-ignore = "E203"
-max-complexity = 15
+# [tool.flake8]
+# -> .flake8
 
 [tool.black]
 line-length = 79
+include = "\\.pyi?$"
+
+[tool.mypy]
+ignore_missing_imports = true
 
 [tool.pytest.ini_options]
-addopts = "-v --cov"
+addopts = "-v --cov --flake8 --mypy"
+filterwarnings = """
+    ignore:SelectableGroups dict interface is deprecated. Use select.
+"""
 
 [tool.sphinx-pyproject]
 copyright = "2023, Testutaro Maruyama"
-extensions = ["sphinx.ext.autodoc", "sphinx.ext.napoleon", "sphinx_rtd_theme"]
+extensions = ["sphinx.ext.autodoc", "sphinx.ext.napoleon", "sphinx.ext.linkcode", "sphinx.ext.githubpages", "sphinx_rtd_theme"]
 templates_path = ["_templates"]
 exclude_patterns = []
 language = "ja"

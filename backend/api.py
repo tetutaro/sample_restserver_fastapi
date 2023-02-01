@@ -1,8 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 """the module that create API and pass the request to the handler
 """
-from typing import List, Type, Dict
+from typing import List, Type, Dict, Optional, Union, Any
 import os
 from logging import Logger, getLogger
 
@@ -10,6 +10,7 @@ from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse, FileResponse
 from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.staticfiles import StaticFiles
+from starlette.responses import HTMLResponse
 from starlette.middleware.cors import CORSMiddleware
 
 from backend import __version__
@@ -83,16 +84,21 @@ logger: Logger = getLogger(wsgi_server)
 handler: SampleHandler = SampleHandler(logger=logger)
 
 
-def error_response(error_types: List[Type[SampleError]]) -> Dict:
+def error_response(
+    error_types: Optional[List[Type[SampleError]]],
+) -> Optional[Dict[Union[int, str], Dict[str, Any]]]:
     """describe error types with OpenAPI format
 
     Args:
-        error_types (List[Type[SampleError]]): error types
+        error_types (Optional[List[Type[SampleError]]]): error types
 
     Returns:
-        Dict: error types with OpenAPI format
+        Optional[Dict[Union[int, str], Dict[str, Any]]]:
+            error types for OpenAPI format
     """
-    d: Dict = dict()
+    if error_types is None:
+        return None
+    d: Dict[Union[int, str], Dict[str, Any]] = dict()
     for et in error_types:
         if not d.get(et.status_code):
             d[et.status_code] = {
@@ -137,13 +143,21 @@ async def backend_error_handler(
 
 @app.get("/favicon.ico", include_in_schema=False)
 async def favicon() -> FileResponse:
-    """display favicon"""
+    """display favicon
+
+    Returns:
+        FileResponse: favicon.ico
+    """
     return FileResponse("icons/favicon.ico")
 
 
 @app.get(f"/api/{API_VERSION}/docs", include_in_schema=False)
-async def swagger_ui_html():
-    """display Swagger UI"""
+async def swagger_ui_html() -> HTMLResponse:
+    """display Swagger UI
+
+    Returns:
+        HTMLResponse: Swagger UI Page
+    """
     return get_swagger_ui_html(
         title=title,
         openapi_url=openapi_url,
@@ -156,10 +170,15 @@ async def swagger_ui_html():
     summary="health check",
     status_code=status.HTTP_200_OK,
     tags=["Others"],
+    responses=error_response(error_types=None),
 )
 async def op_health() -> SampleHealth:
-    """confirm alive of server (GET `/health`)"""
-    return SampleHealth(**{"health": "OK"})
+    """confirm alive of server (GET `/health`)
+
+    Returns:
+        SampleHealth: dummy response
+    """
+    return SampleHealth(health="OK")
 
 
 @app.get(
@@ -167,15 +186,16 @@ async def op_health() -> SampleHealth:
     summary="get version",
     status_code=status.HTTP_200_OK,
     tags=["Others"],
+    responses=error_response(error_types=None),
 )
 async def op_version() -> SampleVersion:
-    f"""get version (GET `/api/{API_VERSION}/version`)"""
+    f"""get version (GET `/api/{API_VERSION}/version`)
+
+    Returns:
+        SampleVersion: version number
+    """
     logger.info("version")
-    return SampleVersion(
-        **{
-            "version": __version__,
-        }
-    )
+    return SampleVersion(version=__version__)
 
 
 @app.get(
@@ -183,15 +203,16 @@ async def op_version() -> SampleVersion:
     summary="get WSGI server name",
     status_code=status.HTTP_200_OK,
     tags=["Others"],
+    responses=error_response(error_types=None),
 )
 async def op_wsgi_server() -> SampleWSGIServer:
-    f"""get WSGI server name (GET `/api/{API_VERSION}/wsgi_server`)"""
+    f"""get WSGI server name (GET `/api/{API_VERSION}/wsgi_server`)
+
+    Returns:
+        SampleWSGIServer: WSGI server name
+    """
     logger.info("wsgi_server")
-    return SampleWSGIServer(
-        **{
-            "wsgi_server": wsgi_server,
-        }
-    )
+    return SampleWSGIServer(wsgi_server=wsgi_server)
 
 
 @app.post(
@@ -200,7 +221,7 @@ async def op_wsgi_server() -> SampleWSGIServer:
     status_code=status.HTTP_201_CREATED,
     tags=["Operation"],
     responses=error_response(
-        [
+        error_types=[
             SampleErrorFound,
         ]
     ),
@@ -221,7 +242,7 @@ async def op_insert_number(req: SampleNumericItem) -> None:
     status_code=status.HTTP_201_CREATED,
     tags=["Operation"],
     responses=error_response(
-        [
+        error_types=[
             SampleErrorFound,
         ]
     ),
@@ -242,7 +263,7 @@ async def op_insert_text(req: SampleTextItem) -> None:
     status_code=status.HTTP_204_NO_CONTENT,
     tags=["Operation"],
     responses=error_response(
-        [
+        error_types=[
             SampleErrorNotFound,
         ]
     ),
@@ -263,7 +284,7 @@ async def op_delete(item_id: str) -> None:
     status_code=status.HTTP_200_OK,
     tags=["Reference"],
     responses=error_response(
-        [
+        error_types=[
             SampleErrorNotFound,
         ]
     ),
@@ -286,7 +307,7 @@ async def op_refer_number(item_id: str) -> SampleNumericItem:
     status_code=status.HTTP_200_OK,
     tags=["Reference"],
     responses=error_response(
-        [
+        error_types=[
             SampleErrorNotFound,
         ]
     ),
@@ -308,7 +329,7 @@ async def op_refer_text(item_id: str) -> SampleTextItem:
     summary="get the number of items",
     status_code=status.HTTP_200_OK,
     tags=["Reference"],
-    responses=error_response([]),
+    responses=error_response(error_types=None),
 )
 async def op_count() -> SampleCount:
     f"""get the number of items (GET `/api/{API_VERSION}/count`)

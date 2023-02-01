@@ -17,14 +17,6 @@ backend.api module
    :undoc-members:
    :show-inheritance:
 
-backend.app module
-------------------
-
-.. automodule:: backend.app
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 backend.dto module
 ------------------
 

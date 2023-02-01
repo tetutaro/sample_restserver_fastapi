@@ -21,8 +21,8 @@ help:
 
 .PHONY: sphinx-apidoc
 sphinx-apidoc:
-	sphinx-apidoc -f -o source/modules -M "../backend/"
-	rm -f source/modules/modules.rst
+	sphinx-apidoc -f --ext-autodoc -o source -M "../backend/"
+	rm -f source/modules.rst
 
 .PHONY: html
 html: sphinx-apidoc

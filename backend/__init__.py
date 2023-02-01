@@ -1,3 +1,3 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 __version__ = "0.5.0"  # automatically updated by poetry-dynamic-versioning
